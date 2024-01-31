@@ -2,11 +2,11 @@
 
 import CustomImage from '@/components/image';
 import { ProductTypes } from '@/interface'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 const ShoppingCart = () => {
-
+  const [total, setTotal] = useState<number>(0)
   const [products, setProducts] = useState<ProductTypes[]>(
     JSON.parse(localStorage.getItem('carts') as string) || []
   )
@@ -53,6 +53,13 @@ const ShoppingCart = () => {
     }
 
   }
+
+  useEffect(() => {
+    const total = products.reduce((acc, item) => {
+      return acc + item.price * item.quantity
+    }, 0)
+    setTotal(total)
+  },[products])
 
   return (
     <div className="h-screen bg-gray-100 pt-20">
@@ -110,7 +117,7 @@ const ShoppingCart = () => {
                       <span onClick={() => handleIncrement(c.id)} className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <p className="text-sm ">{c.price.toLocaleString('en-US', {style: 'currency', currency: 'usd'})}</p>
+                      <p className="text-sm ">{(c.price * c.quantity).toLocaleString('en-US', {style: 'currency', currency: 'usd'})}</p>
                       <svg onClick={() => removeProduct(c.id)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                       </svg>
@@ -125,17 +132,17 @@ const ShoppingCart = () => {
         <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
           <div className="mb-2 flex justify-between">
             <p className="text-gray-700">Subtotal</p>
-            <p className="text-gray-700">$129.99</p>
+            <p className="text-gray-700">{total.toLocaleString('en-US', {currency: 'usd', style: 'currency'})}</p>
           </div>
           <div className="flex justify-between">
             <p className="text-gray-700">Shipping</p>
-            <p className="text-gray-700">$4.99</p>
+            <p className="text-gray-700">{(10).toLocaleString('en-US', {currency: 'usd', style: 'currency'})}</p>
           </div>
           <hr className="my-4" />
           <div className="flex justify-between">
             <p className="text-lg font-bold">Total</p>
             <div className="">
-              <p className="mb-1 text-lg font-bold">$134.98 USD</p>
+              <p className="mb-1 text-lg font-bold">{(total + 10).toLocaleString('en-US', {currency: 'usd', style: 'currency'})}</p>
               <p className="text-sm text-gray-700">including VAT</p>
             </div>
           </div>
