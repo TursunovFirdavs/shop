@@ -17,13 +17,20 @@ const Navbar = () => {
                     <Link href={'/products'} className="mr-5 hover:text-gray-900">
                         All products
                     </Link>
+                    <Link href={'/dashboard'} className="mr-5 hover:text-gray-900">
+                        Dashboard
+                    </Link>
                 </nav>
                 <Link href={'shopping'}>
                     <button className="button bg-blue-600 text-white border-transparent hover:border-blue-600 hover:text-blue-600 hover:bg-transparent">
                         Shopping cart
                     </button>
                 </Link>
-
+                <Link href={'login'}>
+                    <button className="button bg-blue-600 text-white border-transparent hover:border-blue-600 hover:text-blue-600 hover:bg-transparent">
+                        Login
+                    </button>
+                </Link>
             </div>
         </header>
     )
